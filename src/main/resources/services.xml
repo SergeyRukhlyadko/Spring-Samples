@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--
+    Add annotation-based configuration
+    -->
+    <context:annotation-config/>
+
+    <!--
+    Instantiation with a constructor
+    -->
+    <bean id="constructorInit" class="springt.xml.instantiation.ConstructorInit"/>
+
+    <!--
+    Instantiation with a static factory method
+    -->
+    <bean id="staticFactoryMethodInit" class="springt.xml.instantiation.StaticFactoryMethodInit" factory-method="createInstance"/>
+
+    <!--
+    Instantiation by using an instance factory method
+    -->
+    <bean id="instanceFactoryMethodInit" class="springt.xml.instantiation.InstanceFactoryMethodInit"/>
+    <bean id="instanceFactoryMethodInitBean" factory-bean="instanceFactoryMethodInit" factory-method="createInstance"/>
+
+    <!--
+    Constructor-based dependency injection
+    -->
+    <bean id="constructorDI" class="springt.xml.dependency_injection.ConstructorDI">
+        <constructor-arg ref="objectForDI"/>
+        <constructor-arg type="java.lang.String" value="StringParameter"/>
+        <constructor-arg index="2" value="19"/>
+        <constructor-arg name="month" value="12"/>
+        <constructor-arg name="year" value="1990"/>
+    </bean>
+    <bean id="objectForDI" class="springt.xml.dependency_injection.ObjectForDI"/>
+
+    <!--
+    Setter-based dependency injection
+    -->
+    <bean id="setterDI" class="springt.xml.dependency_injection.SetterDI">
+        <property name="objectForDI" ref="objectForDI"/>
+        <property name="stringParameter" value="StringParameter"/>
+    </bean>
+
+    <!--
+    Static factory method dependency injection
+    -->
+    <bean id="staticFactoryMethodDI" class="springt.xml.dependency_injection.StaticFactoryMethodDI" factory-method="createInstance">
+        <constructor-arg ref="objectForDI"/>
+    </bean>
+
+    <!--
+    Instance factory method dependency injection
+    -->
+    <bean id="instanceFactoryMethodDI" class="springt.xml.dependency_injection.InstanceFactoryMethodDI"/>
+    <bean id="instanceFactoryMethodDIBean" factory-bean="instanceFactoryMethodDI" factory-method="createInstance">
+        <constructor-arg ref="objectForDI"/>
+    </bean>
+
+
+
+
+
+    <bean id="serviceInit" class="springt.xml.ServiceInit">
+        <constructor-arg ref="name"/>
+        <constructor-arg ref="age"/>
+        <constructor-arg ref="names"/>
+        <property name="sex" ref="sex"/>
+    </bean>
+
+    <bean id="name" class="springt.xml.Name"/>
+
+    <bean id="age" class="springt.xml.Age"/>
+
+    <bean id="sex" class="springt.xml.Sex"
+          p:sex="m"/>
+
+    <bean class="springt.xml.Sex"
+          p:sex="w">
+            <meta key="value" value="w"/>
+    </bean>
+
+    <bean id="names" class="springt.xml.Names">
+        <property name="properties">
+            <value>
+                name.din=Din
+                name.sergei=Sergei
+            </value>
+        </property>
+    </bean>
+
+    <bean id="data" class="springt.xml.Data" scope="prototype"/>
+
+</beans>
